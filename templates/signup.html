@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .signup-container {
+            flex: 1;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        /* Flash message styling */
+        .flash-messages {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .flash-message {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            animation: flashFadeIn 0.5s ease-in-out;
+        }
+
+        .flash-error {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .flash-success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            border: 1px solid #c8e6c9;
+        }
+
+        .flash-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        @keyframes flashFadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4239ee;
+            box-shadow: 0 0 8px rgba(66, 57, 238, 0.2);
+            transform: scale(1.01);
+        }
+        
+        .btn {
+            width: 100%;
+            background-color: #4239ee;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: #332bd1;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(66, 57, 238, 0.4);
+        }
+        
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #4239ee;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                max-width: 90%;
+            }
+            
+            .signup-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="signup-container">
+            <h2>Sign Up</h2>
+
+            <!-- Flash Messages Section -->
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% elif category == 'warning' %}flash-warning{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            {% endwith %}
+            
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.email.label }}<br>
+                    {{ form.email(size=32, class_="form-control", placeholder="Enter your email") }}
+                </div>
+                <div class="form-group">
+                    {{ form.username.label }}<br>
+                    {{ form.username(size=32, class_="form-control", placeholder="Choose a username") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label }}<br>
+                    {{ form.password(size=32, class_="form-control", placeholder="Create a password") }}
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <div class="login-link">
+                    Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript for Auto-Hiding Flash Messages -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let flashMessages = document.querySelector(".flash-messages");
+            if (flashMessages) {
+                setTimeout(() => {
+                    flashMessages.style.opacity = "0";
+                    setTimeout(() => flashMessages.style.display = "none", 500);
+                }, 2000); // Hide after 3 seconds
+            }
+        });
+    </script>
+</body>
+</html>

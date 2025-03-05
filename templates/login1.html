@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <style>
+        .flash-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .signup-container {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .signup-container h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            transform: scale(1.02);
+            box-shadow: 2px 6px 18px rgba(66, 57, 238, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 2px 8px 20px rgba(66, 57, 238, 0.7);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .login-link {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #4239ee;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Add styling for the remember checkbox */
+        .remember-checkbox {
+            margin-right: 8px;
+            transform: scale(1.2);
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        /* Style the remember me container */
+        .form-group.remember-me {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            margin-top: 5px;
+            width: 100%;
+        }
+
+        .form-group.remember-me label {
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Flash message styling */
+        .flash-messages {
+            width: 100%;
+            margin-bottom: 20px;
+            display: none;
+            /* Hide by default */
+        }
+
+        .flash-messages.show {
+            display: block;
+            /* Show when class added */
+        }
+
+        .flash-message {
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            animation: flashFadeIn 0.5s ease-in-out;
+        }
+
+        .flash-error {
+            background-color: #ffebee;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+        }
+
+        .flash-success {
+            background-color: #e8f5e9;
+            color: #388e3c;
+            border: 1px solid #c8e6c9;
+        }
+
+        @keyframes flashFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="signup-container">
+            <h2>Welcome Back</h2>
+            <!-- Flash messages section -->
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages show">
+                {% for category, message in messages %}
+                <div
+                    class="flash-message {% if category == 'error' %}flash-error{% elif category == 'success' %}flash-success{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            
+
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.username.label(class_="form-label") }}<br>
+                    {{ form.username(size=32, class_="form-control", placeholder="Enter your username") }}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class_="form-label") }}<br>
+                    {{ form.password(size=32, class_="form-control", placeholder="Enter your password") }}
+                </div>
+                <div class="form-group checkbox-group">
+                    {{ form.remember(class_="remember-checkbox") }} {{ form.remember.label }}
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+                <div class="login-link">
+                    Don't have an account? <a href="{{ url_for('signup') }}">Sign up here</a>
+                </div>
+            </form>
+        </div>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='Images/bg.png') }}" alt="Login Background">
+        </div>
+    </div>
+</body>
+<!-- JavaScript to Auto-Hide Flash Messages -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let flashMessages = document.querySelector(".flash-messages");
+        if (flashMessages) {
+            flashMessages.classList.add("show");
+            setTimeout(() => {
+                flashMessages.style.opacity = "0";
+                setTimeout(() => flashMessages.style.display = "none", 500);
+            }, 2000); // Hides after 3 seconds
+        }
+    });
+</script>
+
+</html>

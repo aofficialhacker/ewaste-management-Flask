@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your E-Waste</title>
+    <link rel="stylesheet" href="/static/sellout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2e7d32;
+            padding: 15px 30px;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-brand i {
+            margin-right: 10px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #b9f6ca;
+        }
+        
+        .cont {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 30px auto;
+            background-color: transparent;
+        }
+        
+        .con1 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin: 15px;
+            width: 45%;
+            min-width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .con1:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+        
+        h4 {
+            color: #555;
+            margin: 15px 0 8px;
+            font-size: 1.1rem;
+        }
+        
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, textarea:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .area {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        
+        .tit {
+            font-size: 1.5rem;
+            color: #2e7d32;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .upload-container {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-container:hover {
+            border-color: #2e7d32;
+        }
+        
+        .upload-container img {
+            width: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .btn {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .btn a {
+            display: inline-block;
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn a:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 125, 50, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .con1 {
+                width: 90%;
+            }
+            
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+            }
+            
+            .nav-links a {
+                margin: 0 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <i class="fas fa-recycle"></i>
+            E-Waste Marketplace
+        </div>
+        <div class="nav-links">
+            <a href="/"><i class="fas fa-home"></i> Home</a>
+            <a href="sell.html" class="active"><i class="fas fa-tags"></i> Sell Items</a>
+            <a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a>
+            <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
+        </div>
+    </nav>
+
+    <div class="cont">
+        <div class="con1" id="input">
+            <h1>Sell your E-Waste</h1>
+            <h4>Choose your product category:</h4>
+            <select class="product_type">
+                <option value="">-- Select a category --</option>
+                <option value="Earphones/Headphones">Earphones/Headphones</option>
+                <option value="Fridge">Fridge</option>
+                <option value="Laptop/TV">Laptop/TV</option>
+                <option value="cables">Cables</option>
+                <option value="Telecom Equipments">Telecom Equipment</option>
+                <option value="Battery Disposal">Battery Disposal</option>
+            </select>
+            
+            <h4>Choose your product brand:</h4>
+            <select class="brand">
+                <option value="">-- Select a brand --</option>
+                <option value="samsung">Samsung</option>
+                <option value="apple">Apple</option>
+                <option value="redmi">Redmi</option>
+                <option value="lenovo">Lenovo</option>
+                <option value="hp">HP</option>
+                <option value="dell">Dell</option>
+            </select>
+
+            <div class="desc">
+                <div class="area">Product description</div>
+                <textarea rows="4" placeholder="Describe your product's condition, age, and any other relevant details..."></textarea>
+            </div>
+        </div>
+
+        <div class="con1">
+            <div class="tit">
+                Add images of your product
+            </div>
+            <div class="upload-container">
+                <img src="/static/Images/add.png" alt="Upload image">
+                <p>Click to upload images or drag and drop</p>
+                <p style="font-size: 0.9rem; color: #777;">Supported formats: JPG, PNG, WEBP (max 5MB)</p>
+            </div>
+            <div class="btn">
+                <a href="#">Post Your Item</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
