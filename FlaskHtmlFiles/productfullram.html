@@ -37,8 +37,23 @@
               <!-- <br> -->
              <h2>seller Description</h2> 
               {% if session.user_id and session.user_id != item.user_id %}
-              <a href="{{ url_for('chat', item_id=item._id, seller_id=item.user_id) }}" class="btn">
-                  Chat with seller
+              <a href="/chat/{{ item._id }}/{{ item.user_id }}" class="btn">
+                  <i class="fas fa-comments"></i> Chat with seller
+              </a>
+              {% elif session.user_id and session.user_id == item.user_id %}
+              <div class="seller-actions">
+                  <button class="btn" disabled style="background-color: #999; cursor: not-allowed; margin-bottom: 10px;">Your Own Listing</button>
+                  <form action="{{ url_for('delete_item', item_id=item._id) }}" method="POST" style="display: inline;">
+                      <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?')">
+                          <i class="fas fa-trash"></i> Delete Item
+                      </button>
+                  </form>
+              </div>
+              {% else %}
+              <a href="{{ url_for('login') }}" class="btn">
+                  <i class="fas fa-comments"></i> Login to Chat with seller
+              </a>
+              {% endif %}
               </a>
               {% elif session.user_id and session.user_id == item.user_id %}
               <button class="btn" disabled style="background-color: #999; cursor: not-allowed;">Your Own Listing</button>

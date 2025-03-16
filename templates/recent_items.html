@@ -281,6 +281,7 @@
         <div class="nav-links">
             <a href="{{ url_for('home_loggedin') }}">Home</a>
             <a href="{{ url_for('sell') }}">Sell Items</a>
+            <a href="{{ url_for('my_conversations') }}">Messages</a>
             <a href="{{ url_for('faqs') }}">FAQs</a>
             <a href="{{ url_for('contact') }}">Contact</a>
             <a href="{{ url_for('logout') }}">Logout</a>
@@ -309,11 +310,11 @@
                         <p>{{ selected_item.description }}</p>
                     </div>
                     {% if session.user_id and session.user_id != selected_item.user_id %}
-                    <a href="{{ url_for('chat', item_id=selected_item._id, seller_id=selected_item.user_id) }}" class="contact-seller">📧 Contact Seller</a>
+                        <a href="{{ url_for('chat', item_id=selected_item._id, seller_id=selected_item.user_id) }}" class="contact-seller">📧 Contact Seller</a>
                     {% elif session.user_id and session.user_id == selected_item.user_id %}
-                    <button class="contact-seller" disabled style="background-color: #999; cursor: not-allowed;">Your Own Listing</button>
+                        <button class="contact-seller" disabled style="background-color: #999; cursor: not-allowed;">Your Own Listing</button>
                     {% else %}
-                    <a href="{{ url_for('login') }}" class="contact-seller">📧 Login to Contact Seller</a>
+                        <a href="{{ url_for('login') }}" class="contact-seller">📧 Login to Contact Seller</a>
                     {% endif %}
                 </div>
             </div>

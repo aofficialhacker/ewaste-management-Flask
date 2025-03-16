@@ -6,12 +6,14 @@
         <a href="{{ url_for('home_loggedin') }}">Home</a>
         <a href="{{ url_for('sell') }}">Sell Items</a>
         <div class="dropdown">
-            <a href="#" class="dropbtn">Messages {% if unread_count %}<span class="badge">{{ unread_count }}</span>{% endif %}</a>
-            <div class="dropdown-content">
-    <a href="{{ url_for('my_conversations') }}">Inbox</a>
-                {% if conversation_id %}
-                    <a href="{{ url_for('send_message') }}">Sent</a>
+            <a href="#" class="dropbtn">Messages 
+                {% if unread_count is defined and unread_count > 0 %}
+                    <span class="badge">{{ unread_count }}</span>
                 {% endif %}
+            </a>
+            <div class="dropdown-content">
+                <a href="{{ url_for('my_conversations') }}">Inbox</a>
+                <a href="{{ url_for('sent_messages') }}">Sent</a>
             </div>
         </div>
         <a href="{{ url_for('faqs') }}">FAQs</a>

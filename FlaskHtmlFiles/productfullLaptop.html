@@ -39,7 +39,7 @@
              <h2><i class="fas fa-user-circle"></i> Seller Information</h2>
              <p>This Lenovo laptop is in excellent condition with minimal wear. Intel Core i5 processor, 8GB RAM, and 256GB SSD. Battery holds charge for approximately 4 hours.</p>
               {% if session.user_id and session.user_id != item.user_id %}
-              <a href="{{ url_for('chat', item_id=item._id, seller_id=item.user_id) }}" class="btn">
+              <a href="/chat/{{ item._id }}/{{ item.user_id }}" class="btn">
                   <i class="fas fa-comments"></i> Chat with seller
               </a>
               {% elif session.user_id and session.user_id == item.user_id %}

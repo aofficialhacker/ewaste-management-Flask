@@ -5,7 +5,7 @@ Created on Sun Jan 17 06:25:31 2021
 @author
 """
 
-from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, jsonify, session
+from flask import Flask, render_template, request, flash, redirect, url_for, send_from_directory, jsonify, session, g
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Email, Length
@@ -276,11 +276,7 @@ def allowed_file(filename):
 
 @app.route('/api/sell', methods=['POST'])
 def api_sell():
-    if 'user_id' not in request.form:
-        # In a real app, you would get this from the session
-        user_id = 'anonymous_user'  
-    else:
-        user_id = request.form['user_id']
+    user_id = session.get('user_id', 'anonymous_user')
     
     product_type = request.form.get('product_type')
     brand = request.form.get('brand')
@@ -394,6 +390,8 @@ def home_loggedin():
     # Convert ObjectId to string for each listing
     for listing in recent_listings:
         listing['_id'] = str(listing['_id'])
+        listing['user_id'] = str(listing['user_id'])
+        listing['user_id'] = str(listing['user_id'])
     
     return render_template('loggedin_home.html', recent_listings=recent_listings)
 
@@ -402,10 +400,12 @@ def home_loggedin():
 def recent_items():
     # Fetch all recent listings from the database
     recent_listings = list(mongo.db.listings.find().sort('created_at', -1).limit(20))
+    print(f"Number of recent listings: {len(recent_listings)}")
     
     # Convert ObjectId to string for each listing
     for listing in recent_listings:
         listing['_id'] = str(listing['_id'])
+        listing['user_id'] = str(listing['user_id'])  # Add user_id conversion
     
     # Check if an ID was provided in the query parameters
     item_id = request.args.get('id')
@@ -478,16 +478,7 @@ def chat(item_id, seller_id):
     
     # Get seller details
     try:
-        # Try to convert seller_id to ObjectId if it's not already
-        if not isinstance(seller_id, ObjectId):
-            try:
-                seller_id_obj = ObjectId(seller_id)
-            except:
-                seller_id_obj = seller_id
-        else:
-            seller_id_obj = seller_id
-            
-        seller = mongo.db.users.find_one({"_id": seller_id_obj})
+        seller = mongo.db.users.find_one({"_id": ObjectId(seller_id)})
     except Exception as e:
         print(f"Error finding seller: {e}")
         seller = None
@@ -614,7 +605,13 @@ def my_conversations():
     for conv in conversations:
         # Get the other participant
         other_participant_id = next(p for p in conv['participants'] if p != current_user_id)
-        other_user = mongo.db.users.find_one({"_id": ObjectId(other_participant_id)})
+        # Handle anonymous users or invalid ObjectIds
+        try:
+            other_user = mongo.db.users.find_one({"_id": ObjectId(other_participant_id)})
+            if not other_user:
+                other_user = {"username": "Anonymous User", "_id": other_participant_id}
+        except:
+            other_user = {"username": "Anonymous User", "_id": other_participant_id}
         
         # Get the item
         item = mongo.db.listings.find_one({"_id": ObjectId(conv['item_id'])})
@@ -642,6 +639,14 @@ def my_conversations():
         })
     
     return render_template('conversations.html', conversations=conversation_details)
+
+@app.route('/sent_messages')
+def sent_messages():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    current_user_id = session['user_id']
+    messages = list(mongo.db.messages.find({'sender_id': current_user_id}))
+    return render_template('sent_messages.html', messages=messages)
 
 if __name__ == '__main__':
     app.run(debug=True)

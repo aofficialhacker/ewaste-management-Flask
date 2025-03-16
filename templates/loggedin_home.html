@@ -289,8 +289,9 @@
             <span class="logo-icon">♻️</span> E-Waste Marketplace
         </div>
         <div class="nav-links">
-            <a href="#">Home</a>
+            <a href="{{ url_for('home_loggedin') }}">Home</a>
             <a href="{{ url_for('sell') }}">Sell Items</a>
+            <a href="{{ url_for('my_conversations') }}">Messages</a>
             <a href="{{ url_for('faqs') }}">FAQs</a>
             <a href="{{ url_for('contact') }}">Contact</a>
             <a href="{{ url_for('logout') }}">Logout</a>
