@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Productfull</title>
+    <meta name="description" content="Laptop details page for e-waste recycling and selling">
+    <title>Laptop Details | E-Waste Recycling</title>
+    <link rel="stylesheet" href="/static/productfull.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<link rel="stylesheet" href="/static/productfull.css">
 
 <body>
     <div class="cont">
@@ -27,18 +29,26 @@
         </div>
         <div class="pro">
             <div class="tit">
-           <h1> Lenovo</h1>
+           <h1>Lenovo ThinkPad X1 Carbon - 14" Ultrabook</h1>
             </div>
             <div class="price">
-              <h2>  Expected Price</h2>
-              
+              <h2>Expected Price: <span>₹15,000 - ₹25,000</span></h2>
+              <p>Price varies based on specifications and condition</p>
           </div>
           <div class="seller">      
-              <!-- <br> -->
-             <h2>seller Description</h2> 
-              <div class="btn">
-                  Chat with seller
-              </div>
+             <h2><i class="fas fa-user-circle"></i> Seller Information</h2>
+             <p>This Lenovo laptop is in excellent condition with minimal wear. Intel Core i5 processor, 8GB RAM, and 256GB SSD. Battery holds charge for approximately 4 hours.</p>
+              {% if session.user_id and session.user_id != item.user_id %}
+              <a href="{{ url_for('chat', item_id=item._id, seller_id=item.user_id) }}" class="btn">
+                  <i class="fas fa-comments"></i> Chat with seller
+              </a>
+              {% elif session.user_id and session.user_id == item.user_id %}
+              <button class="btn" disabled style="background-color: #999; cursor: not-allowed;">Your Own Listing</button>
+              {% else %}
+              <a href="{{ url_for('login') }}" class="btn">
+                  <i class="fas fa-comments"></i> Login to Chat with seller
+              </a>
+              {% endif %}
           </div>
 
         </div>

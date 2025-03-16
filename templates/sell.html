@@ -3,13 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sell</title>
+    <title>Sell Your E-Waste</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 25px;
+        }
+        
+        h1 {
+            color: #2e7d32;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, textarea:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .upload-container {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-container:hover {
+            border-color: #2e7d32;
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            background-color: #2e7d32;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #1b5e20;
+        }
+        
+        #preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .preview-item {
+            position: relative;
+            margin: 5px;
+        }
+        
+        .preview-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        
+        .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff5252;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Sell Your Product</h1>
-        <p>Information about selling products.</p>
+        <h1>Sell Your E-Waste</h1>
+        
+        <form id="sell-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="product_type">Choose your product category:</label>
+                <select id="product_type" name="product_type" required>
+                    <option value="">-- Select a category --</option>
+                    <option value="Earphones/Headphones">Earphones/Headphones</option>
+                    <option value="Fridge">Fridge</option>
+                    <option value="Laptop/TV">Laptop/TV</option>
+                    <option value="Cables">Cables</option>
+                    <option value="Telecom Equipment">Telecom Equipment</option>
+                    <option value="Battery">Battery Disposal</option>
+                    <option value="Mobile Phone">Mobile Phone</option>
+                    <option value="Motherboard">Motherboard</option>
+                    <option value="RAM">RAM</option>
+                    <option value="Smartwatch">Smartwatch</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="brand">Choose your product brand:</label>
+                <select id="brand" name="brand" required>
+                    <option value="">-- Select a brand --</option>
+                    <option value="Samsung">Samsung</option>
+                    <option value="Apple">Apple</option>
+                    <option value="Redmi">Redmi</option>
+                    <option value="Lenovo">Lenovo</option>
+                    <option value="HP">HP</option>
+                    <option value="Dell">Dell</option>
+                    <option value="LG">LG</option>
+                    <option value="Sony">Sony</option>
+                    <option value="Boats">Boats</option>
+                    <option value="Kingston">Kingston</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Product description:</label>
+                <textarea id="description" name="description" placeholder="Describe your product's condition, age, and any other relevant details..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Add images of your product:</label>
+                <div class="upload-container" id="upload-area">
+                    <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp" style="display: none;" multiple>
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 40px; color: #2e7d32; margin-bottom: 10px;"></i>
+                    <p>Click to upload images or drag and drop</p>
+                    <p style="font-size: 0.9rem; color: #777;">Supported formats: JPG, PNG, WEBP (max 5MB)</p>
+                    <div id="preview-container"></div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn" id="post-button">Post Your Item</button>
+        </form>
     </div>
-</body>
-</html>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const previewContainer = document.getElementById('preview-container');
+            const sellForm = document.getElementById('sell-form');
+            const postButton = document.getElementById('post-button');
+            const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+            const selectedFiles = [];
+
+            // Open file dialog when clicking on the upload area
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            // Handle drag and drop events
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#2e7d32';
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.style.borderColor = '#ccc';
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ccc';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length > 0) {
+                    handleFiles(fileInput.files);
+                }
+            });
+
+            // Process selected files
+            function handleFiles(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // Validate file type
+                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Invalid file type. Please upload JPG, PNG, or WEBP files only.');
+                        continue;
+                    }
+                    
+                    // Validate file size
+                    if (file.size > maxFileSize) {
+                        alert('File too large. Maximum size is 5MB.');
+                        continue;
+                    }
+                    
+                    // Add file to selected files array
+                    selectedFiles.push(file);
+                    
+                    // Create preview
+                    createPreview(file);
+                }
+            }
+
+            // Create image preview
+            function createPreview(file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewWrapper = document.createElement('div');
+                    previewWrapper.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.className = 'remove-btn';
+                    
+                    // Remove image when clicking the remove button
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent triggering the upload area click
+                        const index = selectedFiles.indexOf(file);
+                        if (index > -1) {
+                            selectedFiles.splice(index, 1);
+                        }
+                        previewWrapper.remove();
+                    });
+                    
+                    previewWrapper.appendChild(img);
+                    previewWrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(previewWrapper);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            // Handle form submission
+            sellForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const productType = document.getElementById('product_type').value;
+                const brand = document.getElementById('brand').value;
+                const description = document.getElementById('description').value;
+                
+                // Validate form fields
+                if (!productType || !brand || !description) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                if (selectedFiles.length === 0) {
+                    alert('Please upload at least one image.');
+                    return;
+                }
+                
+                // Create FormData object to send files and form data
+                const formData = new FormData();
+                formData.append('product_type', productType);
+                formData.append('brand', brand);
+                formData.append('description', description);
+                
+                // Append all selected files
+                selectedFiles.forEach((file, index) => {
+                    formData.append(`image_${index}`, file);
+                });
+                
+                // Show loading state
+                postButton.textContent = 'Submitting...';
+                postButton.disabled = true;
+                
+                // Send the form data to the server
+                fetch('/api/sell', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset button state
+                    postButton.textContent = 'Post Your Item';
+                    postButton.disabled = false;
+                    
+                    if (data.success) {
+                        alert('Your item has been submitted successfully!');
+                        // Clear the form
+                        sellForm.reset();
+                        
+                        // Clear image previews
+                        previewContainer.innerHTML = '';
+                        
+                        // Reset the selected files array
+                        selectedFiles.length = 0;
+                        
+                        // Redirect to logged-in home page after a short delay
+                        setTimeout(() => {
+                            window.location.href = '/loggedin_home';
+                        }, 1500);
+                    } else {
+                        alert('Error: ' + (data.message || 'Failed to submit your item. Please try again.'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    postButton.textContent = 'Post Your Item';
+                    postButton.disabled = false;
+                    alert('An error occurred. Please try again later.');
+                });
+            });
+        });

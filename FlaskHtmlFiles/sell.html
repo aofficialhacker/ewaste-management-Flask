@@ -195,7 +195,6 @@
         <div class="nav-links">
             <a href="/"><i class="fas fa-home"></i> Home</a>
             <a href="sell.html" class="active"><i class="fas fa-tags"></i> Sell Items</a>
-            <a href="aboutus.html"><i class="fas fa-info-circle"></i> About Us</a>
             <a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a>
         </div>
     </nav>
@@ -235,16 +234,228 @@
             <div class="tit">
                 Add images of your product
             </div>
-            <div class="upload-container">
-                <img src="/static/Images/add.png" alt="Upload image">
+            <div class="upload-container" id="upload-area">
+                <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp" style="display: none;" multiple>
+                <img src="/static/Images/add.png" alt="Upload image" id="upload-icon">
                 <p>Click to upload images or drag and drop</p>
                 <p style="font-size: 0.9rem; color: #777;">Supported formats: JPG, PNG, WEBP (max 5MB)</p>
+                <div id="preview-container" style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 15px;"></div>
             </div>
             <div class="btn">
-                <a href="#">Post Your Item</a>
+                <a href="#" id="post-button">Post Your Item</a>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            const previewContainer = document.getElementById('preview-container');
+            const uploadIcon = document.getElementById('upload-icon');
+            const postButton = document.getElementById('post-button');
+            const maxFileSize = 5 * 1024 * 1024; // 5MB in bytes
+            const selectedFiles = [];
+
+            // Open file dialog when clicking on the upload area
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            // Handle drag and drop events
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#2e7d32';
+            });
+
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.style.borderColor = '#ccc';
+            });
+
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.style.borderColor = '#ccc';
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleFiles(e.dataTransfer.files);
+                }
+            });
+
+            // Handle file selection
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files.length > 0) {
+                    handleFiles(fileInput.files);
+                }
+            });
+
+            // Process selected files
+            function handleFiles(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    // Validate file type
+                    const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+                    if (!validTypes.includes(file.type)) {
+                        alert('Invalid file type. Please upload JPG, PNG, or WEBP files only.');
+                        continue;
+                    }
+                    
+                    // Validate file size
+                    if (file.size > maxFileSize) {
+                        alert('File too large. Maximum size is 5MB.');
+                        continue;
+                    }
+                    
+                    // Add file to selected files array
+                    selectedFiles.push(file);
+                    
+                    // Create preview
+                    createPreview(file);
+                }
+                
+                // Hide upload icon if files are selected
+                if (selectedFiles.length > 0) {
+                    uploadIcon.style.display = 'none';
+                }
+            }
+
+            // Create image preview
+            function createPreview(file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewWrapper = document.createElement('div');
+                    previewWrapper.className = 'preview-item';
+                    previewWrapper.style.position = 'relative';
+                    previewWrapper.style.margin = '5px';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '80px';
+                    img.style.height = '80px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '5px';
+                    
+                    const removeBtn = document.createElement('div');
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.style.position = 'absolute';
+                    removeBtn.style.top = '-8px';
+                    removeBtn.style.right = '-8px';
+                    removeBtn.style.backgroundColor = '#ff5252';
+                    removeBtn.style.color = 'white';
+                    removeBtn.style.borderRadius = '50%';
+                    removeBtn.style.width = '20px';
+                    removeBtn.style.height = '20px';
+                    removeBtn.style.display = 'flex';
+                    removeBtn.style.justifyContent = 'center';
+                    removeBtn.style.alignItems = 'center';
+                    removeBtn.style.cursor = 'pointer';
+                    removeBtn.style.fontSize = '14px';
+                    removeBtn.style.fontWeight = 'bold';
+                    
+                    // Remove image when clicking the remove button
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent triggering the upload area click
+                        const index = selectedFiles.indexOf(file);
+                        if (index > -1) {
+                            selectedFiles.splice(index, 1);
+                        }
+                        previewWrapper.remove();
+                        
+                        // Show upload icon if no files are selected
+                        if (selectedFiles.length === 0) {
+                            uploadIcon.style.display = 'block';
+                        }
+                    });
+                    
+                    previewWrapper.appendChild(img);
+                    previewWrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(previewWrapper);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            // Handle form submission
+            postButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const productType = document.querySelector('.product_type').value;
+                const brand = document.querySelector('.brand').value;
+                const description = document.querySelector('textarea').value;
+                
+                // Validate form fields
+                if (!productType) {
+                    alert('Please select a product category.');
+                    return;
+                }
+                
+                if (!brand) {
+                    alert('Please select a product brand.');
+                    return;
+                }
+                
+                if (!description) {
+                    alert('Please provide a product description.');
+                    return;
+                }
+                
+                if (selectedFiles.length === 0) {
+                    alert('Please upload at least one image.');
+                    return;
+                }
+                
+                // Create FormData object to send files and form data
+                const formData = new FormData();
+                formData.append('product_type', productType);
+                formData.append('brand', brand);
+                formData.append('description', description);
+                
+                // Append all selected files
+                selectedFiles.forEach((file, index) => {
+                    formData.append(`image_${index}`, file);
+                });
+                
+                // Show loading state
+                postButton.textContent = 'Submitting...';
+                postButton.style.backgroundColor = '#999';
+                
+                // Send the form data to the server
+                fetch('/api/sell', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Reset button state
+                    postButton.textContent = 'Post Your Item';
+                    postButton.style.backgroundColor = '#2e7d32';
+                    
+                    if (data.success) {
+                        alert('Your item has been submitted successfully!');
+                        // Clear the form
+                        document.querySelector('.product_type').value = '';
+                        document.querySelector('.brand').value = '';
+                        document.querySelector('textarea').value = '';
+                        
+                        // Clear image previews
+                        previewContainer.innerHTML = '';
+                        selectedFiles.length = 0;
+                        uploadIcon.style.display = 'block';
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting your item.');
+                    
+                    // Reset button state
+                    postButton.textContent = 'Post Your Item';
+                    postButton.style.backgroundColor = '#2e7d32';
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

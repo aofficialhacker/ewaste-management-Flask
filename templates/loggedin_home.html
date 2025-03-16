@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Waste Marketplace - Home</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 15px 5%;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 28px;
+            color: #2e7d32;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #2e7d32;
+            text-decoration: underline;
+            text-decoration-color: #2e7d32;
+        }
+        
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(46, 125, 50, 0.05));
+        }
+        
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 40px;
+            color: #555;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            margin: 10px;
+            background-color: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+        
+        .btn:hover {
+            background-color: #1b5e20;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+        }
+        
+        .btn-secondary {
+            background-color: #ffffff;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f1f8e9;
+            color: #1b5e20;
+        }
+        
+        /* Features Section */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 60px 5%;
+            background-color: #ffffff;
+        }
+        
+        .feature-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 350px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #2e7d32;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        /* Featured Items Section */
+        .featured-section {
+            padding: 60px 5%;
+            background-color: #f1f8e9;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2e7d32;
+            font-size: 2.2rem;
+        }
+        
+        .featured-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .item-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .item-details {
+            padding: 20px;
+        }
+        
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .item-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .item-description {
+            color: #555;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .item-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .item-link:hover {
+            background-color: #1b5e20;
+        }
+        
+        /* Your Posted Items Section */
+        .your-items-section {
+            padding: 60px 5%;
+            background-color: #ffffff;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+        
+        .footer p {
+            margin: 10px 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .featured-items {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">♻️</span> E-Waste Marketplace
+        </div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="{{ url_for('sell') }}">Sell Items</a>
+            <a href="{{ url_for('faqs') }}">FAQs</a>
+            <a href="{{ url_for('contact') }}">Contact</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Welcome to E-Waste Marketplace</h1>
+        <p>Turn your electronic waste into value while contributing to a sustainable future. Our platform connects e-waste sellers with buyers to promote recycling and reduce environmental impact.</p>
+        <div>
+            <a href="{{ url_for('sell') }}" class="btn">Sell Your Items</a>
+            <a href="#featured" class="btn btn-secondary">Browse Products</a>
+        </div>
+    </section>
+    
+    <!-- Recently Posted Items Section -->
+    <section class="featured-section" id="featured">
+        <h2 class="section-title">Recently Posted Items</h2>
+        <div class="featured-items">
+            {% if recent_listings %}
+                {% for item in recent_listings %}
+                    <div class="item-card">
+                        <img src="{{ url_for('uploads.static', filename=item.images[0]) }}" alt="{{ item.product_type }}" class="item-image">
+                        <div class="item-details">
+                            <h3 class="item-title">{{ item.product_type }}</h3>
+                            <div class="item-meta">
+                                <span>Brand: {{ item.brand }}</span>
+                                <span>Posted: {{ item.created_at.strftime('%d %b %Y') }}</span>
+                            </div>
+                            <p class="item-description">{{ item.description|truncate(100) }}</p>
+                            <a href="{{ url_for('recent_items') }}?id={{ item._id }}" class="item-link">View Details</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No items have been posted yet.</p>
+            {% endif %}
+        </div>
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{{ url_for('recent_items') }}" class="btn">View All Recent Items</a>
+        </div>
+    </section>
+    
+    <!-- Featured Products Section -->
+    <section class="featured-section">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="featured-items">
+            <!-- Featured products will be displayed here -->
+            <div class="item-card">
+                <img src="/static/Images/mobile.jpg" alt="Mobile Phone" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Mobile Phone</h3>
+                    <div class="item-meta">
+                        <span>Brand: Samsung</span>
+                        <span>Category: Electronics</span>
+                    </div>
+                    <p class="item-description">Used Samsung smartphone in good condition. Minor scratches on the screen but fully functional.</p>
+                    <a href="productfullmobile.html" class="item-link">View Details</a>
+                </div>
+            </div>
+            
+            <div class="item-card">
+                <img src="/static/Images/dell.jpg" alt="Laptop" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Laptop</h3>
+                    <div class="item-meta">
+                        <span>Brand: Dell</span>
+                        <span>Category: Computers</span>
+                    </div>
+                    <p class="item-description">Dell laptop with Intel Core i5 processor. Battery needs replacement but otherwise in working condition.</p>
+                    <a href="productfullLaptop.html" class="item-link">View Details</a>
+                </div>
+            </div>
+            
+            <div class="item-card">
+                <img src="/static/Images/headphone.jpg" alt="Headphones" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Headphones</h3>
+                    <div class="item-meta">
+                        <span>Brand: Boats</span>
+                        <span>Category: Audio</span>
+                    </div>
+                    <p class="item-description">Wireless headphones with noise cancellation. Left ear has slight audio issues.</p>
+                    <a href="productfullheadphone.html" class="item-link">View Details</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <img src="/static/Images/battery.jpg" alt="Battery" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Battery</h3>
+                    <div class="item-meta">
+                        <span>Brand: Duracell</span>
+                        <span>Category: Power</span>
+                    </div>
+                    <p class="item-description">Used lithium-ion battery in good condition. Still holds charge well and suitable for recycling.</p>
+                    <a href="productfullBattery.html" class="item-link">View Details</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <img src="/static/Images/motherboard.jpeg" alt="Motherboard" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Motherboard</h3>
+                    <div class="item-meta">
+                        <span>Brand: Asus</span>
+                        <span>Category: Computer Parts</span>
+                    </div>
+                    <p class="item-description">Used motherboard from a desktop PC. Some components can be salvaged for recycling.</p>
+                    <a href="productfullmotherboard.html" class="item-link">View Details</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <img src="/static/Images/ram.jpg" alt="RAM" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">RAM</h3>
+                    <div class="item-meta">
+                        <span>Brand: Kingston</span>
+                        <span>Category: Computer Parts</span>
+                    </div>
+                    <p class="item-description">8GB DDR4 RAM module removed from a working computer. Tested and fully functional.</p>
+                    <a href="productfullram.html" class="item-link">View Details</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <img src="/static/Images/watch.jpg" alt="Smartwatch" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Smartwatch</h3>
+                    <div class="item-meta">
+                        <span>Brand: Fitbit</span>
+                        <span>Category: Wearables</span>
+                    </div>
+                    <p class="item-description">Used smartwatch with minor screen scratches. Battery life reduced but device is fully functional.</p>
+                    <a href="productfullSmartwatch.html" class="item-link">View Details</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <img src="/static/Images/wire.jpeg" alt="Cable Wire" class="item-image">
+                <div class="item-details">
+                    <h3 class="item-title">Cable Wire</h3>
+                    <div class="item-meta">
+                        <span>Brand: Generic</span>
+                        <span>Category: Accessories</span>
+                    </div>
+                    <p class="item-description">Assorted cable wires including USB, HDMI, and power cables. Good for recycling copper.</p>
+                    <a href="productfullCablewire.html" class="item-link">View Details</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>Recycle Electronics</h3>
+            <p>Give your old electronics a new life through our recycling marketplace.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💰</div>
+            <h3>Earn Money</h3>
+            <p>Get paid for your e-waste and contribute to the circular economy.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>Save the Planet</h3>
+            <p>Reduce landfill waste and help conserve natural resources.</p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 E-Waste Marketplace. All rights reserved.</p>
+        <p>Reducing e-waste, one device at a time.</p>
+    </footer>
+</body>
+</html>
